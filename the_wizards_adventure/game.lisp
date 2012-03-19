@@ -8,8 +8,7 @@
     (garden
       (you are in a beautiful garden. there is a well in front of you.))
     (attic
-      (you are in the attic. there is a giant welding torch in the corner.))
-  ))
+      (you are in the attic. there is a giant welding torch in the corner.))))
 
 ;===============================================================================
 ; Describing the Location
@@ -33,8 +32,7 @@
   (garden
     (living-room east door))
   (attic
-    (living-room downstairs ladder))
-  ))
+    (living-room downstairs ladder))))
 
 ; Describe the path
 ;  (using quasiquoting)
@@ -51,7 +49,33 @@
       (cdr (assoc location edges)))))
 
 ;===============================================================================
+; Describing Objects at a Specific Location
+;===============================================================================
+
+(defparameter *objects* '(whisky bucket frog chain))
+
+; Keep track on the location of each object
+(defparameter *object-locations* '(
+  (whisky living-room)
+  (bucket living-room)
+  (chain  garden)
+  (frog   garden)))
+
+; List objects visible from a given location
+(defun objects-at (loc objs obj-locs)
+  (labels ((at-loc-p (obj)
+    (eq (cadr (assoc obj obj-locs)) loc)))
+      (remove-if-not #'at-loc-p objs)))
+
+; Describing visible objects
+(defun describe-objects (loc objs obj-loc)
+  (labels ((describe-obj (obj)
+    `(you see a ,obj on the floor.)))
+      (apply #'append
+        (mapcar #'describe-obj (objects-at loc objs obj-loc)))))
+
+;===============================================================================
 ; OUTPUT!
 ;===============================================================================
 
-(print (describe-paths 'living-room *edges*))
+(print (describe-objects 'living-room *objects* *object-locations*))
