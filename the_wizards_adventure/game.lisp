@@ -75,7 +75,22 @@
         (mapcar #'describe-obj (objects-at loc objs obj-loc)))))
 
 ;===============================================================================
+; Describing It All
+;===============================================================================
+
+(defparameter *location* 'living-room)
+
+; Look by calling all our describe functions
+;  (not in the functional programming style)
+;
+(defun look ()
+  (append
+    (describe-location *location* *nodes*)
+    (describe-paths    *location* *edges*)
+    (describe-objects  *location* *objects* *object-locations*)))
+
+;===============================================================================
 ; OUTPUT!
 ;===============================================================================
 
-(print (describe-objects 'living-room *objects* *object-locations*))
+(print (look))
