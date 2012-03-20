@@ -109,3 +109,10 @@
       (push (list object 'body) *object-locations*)
       `(you are now carrying the ,object))
     (t '(you cannot get that.))))
+
+;===============================================================================
+; Checking Our Inventory
+;===============================================================================
+
+(defun inventory ()
+  (cons 'items- (objects-at 'body *objects* *object-locations*)))
